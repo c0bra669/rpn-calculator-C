@@ -26,9 +26,9 @@ int operator(char operator){
 }
 int main(){
     char user_input[10];
-    char* rpn;
-    scanf("%s",&user_input);
-    stack_t *char_stack = create_stack(sizeof(user_input),"char");
+    char rpn[10];
+    scanf("%s",user_input);
+    stack_t *char_stack = create_stack(sizeof(char)*10,"char");
     for(int i =0;i<strlen(user_input);i++){
         char cToStr[2];
         cToStr[1] = '\0';
@@ -41,7 +41,7 @@ int main(){
             push(char_stack,user_input[i]);
             continue;
         }
-        else if (user_input[i]==")"){
+        else if (user_input[i]==')'){
             char temp;
             
             while(!is_empty(char_stack) && temp!='('){
