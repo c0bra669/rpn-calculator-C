@@ -43,32 +43,30 @@ int calculate(char * rpn,int size){
         return 0;
     }
     for(int i=0; i<size;i++){
-        if(operator(rpn[i]==not_operator)){
-            push(int_stack,rpn[i]);
+        if(operator(rpn[i])==not_operator){
+            push(int_stack,rpn[i]-'0');
             continue;
         }
-        else{
-            int a,b=0;
-            pop(int_stack,&a);
-            pop(int_stack,&b);
-            switch (operator(rpn[i]))
-            {
-                case add:
-                    push(int_stack,(int)(a+b));
-                break;
-                //case sub:
-                //    push(int_stack,a-b);
-                //break;
-                case mul:
-                    push(int_stack,(int)(a*b));
-                break;
-                //case dev:
-                    //push(int_stack,a*b);
-                //break;
-                default:
-                    return 0;
-                break;
-            }
+        int a,b=0;
+        pop(int_stack,&b);
+        pop(int_stack,&a);
+        switch (operator(rpn[i]))
+        {
+            case add:
+                push(int_stack,(int)(a+b));
+            break;
+            //case sub:
+            //    push(int_stack,a-b);
+            //break;
+            case mul:
+                push(int_stack,(int)(a*b));
+            break;
+            //case dev:
+                //push(int_stack,a*b);
+            //break;
+            default:
+                return 0;
+            break;
         }
     }
     int result;
@@ -82,7 +80,6 @@ int main(){
     char *user_input=NULL;
     scanf("%m[^\n]",&user_input);
     char rpn[strlen(user_input)+1];
-    char rpn[strlen(user_input)+1]='\0';
     // user input
     stack_t *char_stack = create_stack(sizeof(char)*strlen(user_input),"char");
     // stack creation
@@ -163,7 +160,8 @@ int main(){
     }
     destroy_stack(char_stack);
     printf("%s\n",rpn);
-    printf("%d",calculate(rpn,strlen(rpn)));
+    printf("%d\n",calculate(rpn,strlen(rpn)));
+    //printf("%d",calculate("22+",3));
     //calculate(rpn,strlen(rpn));
     return 0;
 }
