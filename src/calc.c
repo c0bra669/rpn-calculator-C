@@ -37,7 +37,7 @@ int operator(char operator){
         break;
        } 
 }
-double calculate(char * rpn,int size){
+int calculate(char * rpn,int size){
     stack_t *int_stack =create_stack(size,"int");
     if(int_stack==NULL){
         return 0;
@@ -54,13 +54,13 @@ double calculate(char * rpn,int size){
             switch (operator(rpn[i]))
             {
                 case add:
-                    push(int_stack,a+b);
+                    push(int_stack,(int)(a+b));
                 break;
                 //case sub:
                 //    push(int_stack,a-b);
                 //break;
                 case mul:
-                    push(int_stack,a*b);
+                    push(int_stack,(int)(a*b));
                 break;
                 //case dev:
                     //push(int_stack,a*b);
@@ -71,16 +71,18 @@ double calculate(char * rpn,int size){
             }
         }
     }
-    double result;
+    int result;
+    
     pop(int_stack,&result);
     destroy_stack(int_stack);
+    //printf("%d ",result);
     return result;
 }
 int main(){
     char *user_input=NULL;
     scanf("%m[^\n]",&user_input);
     char rpn[strlen(user_input)+1];
-    
+    char rpn[strlen(user_input)+1]='\0';
     // user input
     stack_t *char_stack = create_stack(sizeof(char)*strlen(user_input),"char");
     // stack creation
@@ -161,6 +163,7 @@ int main(){
     }
     destroy_stack(char_stack);
     printf("%s\n",rpn);
-    printf("%lf",calculate(rpn,strlen(rpn)));
+    printf("%d",calculate(rpn,strlen(rpn)));
+    //calculate(rpn,strlen(rpn));
     return 0;
 }
