@@ -4,76 +4,97 @@
 #include<stack.h>
 //cstack librery  
 #define _GNU_SOURCE
-enum operand{
+enum operator{
         add,
+        sub,
         mul,
+        dev,
         left_p,
         right_p,
         not_operator=-1,
 };
+enum precedence{
+    low,
+    high
+};
+
 int operator(char operator){
    switch (operator)
        {
         case '+':
-        case '-':
             return add;
         break;
-
+        case '-':
+            return sub;
+        break;
         case '*':
-        case '/':
             return mul;
         break;
-
+        case '/':
+            return dev;
+        break;
         case '(':
             return left_p;
         break;
-
         case ')':
             return right_p;
         break;
-
         default:
             return -1;
         break;
        } 
 }
-int calculate(char * rpn,int size){
-    stack_t *int_stack =create_stack(size,"int");
-    if(int_stack==NULL){
-        return 0;
+int precedence(char c){
+    switch (operator(c))
+    {
+        case add:
+        case sub:
+            return low;
+        break;
+        case mul:
+        case dev:
+            return high;
+        break;
+
+    }
+}
+float calculate(char * rpn,int size){
+    stack_t *num_stack =create_stack(size,"float");
+    if(num_stack==NULL){
+        return 0.0;
     }
     for(int i=0; i<size;i++){
         if(operator(rpn[i])==not_operator){
-            push(int_stack,rpn[i]-'0');
+            float value = (float)(rpn[i]-'0');
+            push(num_stack,value);
             continue;
         }
-        int a,b=0;
-        pop(int_stack,&b);
-        pop(int_stack,&a);
+        float a,b=0;
+        pop(num_stack,&b);
+        pop(num_stack,&a);
         switch (operator(rpn[i]))
         {
             case add:
-                push(int_stack,(int)(a+b));
+                push(num_stack,(float)(a+b));
             break;
-            //case sub:
-            //    push(int_stack,a-b);
-            //break;
+            case sub:
+                push(num_stack,(float)(a-b));
+            break;
             case mul:
-                push(int_stack,(int)(a*b));
+                push(num_stack,(float)(a*b));
             break;
-            //case dev:
-                //push(int_stack,a*b);
-            //break;
+            case dev:
+              push(num_stack,(float)(a*b));
+            break;
             default:
                 return 0;
             break;
         }
     }
-    int result;
+    float result;
     
-    pop(int_stack,&result);
-    destroy_stack(int_stack);
-    //printf("%d ",result);
+    pop(num_stack,&result);
+    destroy_stack(num_stack);
     return result;
 }
 int main(){
@@ -122,7 +143,7 @@ int main(){
             //if is operator
             char temp;
             peek(char_stack,&temp);
-            if(operator(temp)>=operator(user_input[i])){
+            if(precedence(temp)>=precedence(user_input[i])){
                 //checks order of operations 
                 while (!is_empty(char_stack)&&temp!='('&&temp!=')')
                 {
@@ -160,7 +181,7 @@ int main(){
     }
     destroy_stack(char_stack);
     printf("%s\n",rpn);
-    printf("%d\n",calculate(rpn,strlen(rpn)));
+    printf("%f\n",calculate(rpn,strlen(rpn)));
     //printf("%d",calculate("22+",3));
     //calculate(rpn,strlen(rpn));
     return 0;
