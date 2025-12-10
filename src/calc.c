@@ -63,15 +63,18 @@ float calculate(char * rpn,int size){
     if(num_stack==NULL){
         return 0.0;
     }
+    //creates stack and checks if it was created
     for(int i=0; i<size;i++){
         if(operator(rpn[i])==not_operator){
             float value = (float)(rpn[i]-'0');
+            // if current char is a number, converts it to float, pushes it to the stack
             push(num_stack,value);
             continue;
         }
         float a,b=0;
         pop(num_stack,&b);
         pop(num_stack,&a);
+        //pops two digiets
         switch (operator(rpn[i]))
         {
             case add:
@@ -91,9 +94,11 @@ float calculate(char * rpn,int size){
             break;
         }
     }
+    // checks which operator is used performs operations
     float result;
     
     pop(num_stack,&result);
+    // last item on a stack is result
     destroy_stack(num_stack);
     return result;
 }
@@ -190,6 +195,8 @@ int main(int argc, char **argv){
     }
     else if (argc==2)
     {
+        // work in progres 
+        
         if(strcmp(argv[1],"-R")==0)
         {
             char *user_input=NULL;
