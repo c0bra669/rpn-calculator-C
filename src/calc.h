@@ -14,5 +14,5 @@ enum precedence{
 int operators(char o);
 char *postfix_to_infix(char *rpn,int size);
 void insert_char(char *str, int pos, char ch);
-float calculate(char * rpn,int size);
+float calculate(char *rpn,int size);
 int precedence(char c);
