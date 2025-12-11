@@ -27,5 +27,5 @@ gcc -o calculate src/calc.c -lcstack
 compile and link libstack staticly
 
 # Dependencies
-libcstack
-GNU C
+- libcstack
+- GNU C
