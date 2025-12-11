@@ -2,24 +2,12 @@
 #include<stdio.h>
 #include<string.h>
 #include<stack.h>
+#include"calc.h"
 //cstack librery  
 #define _GNU_SOURCE
-enum operator{
-        add,
-        sub,
-        mul,
-        dev,
-        left_p,
-        right_p,
-        not_operator=-1,
-};
-enum precedence{
-    low,
-    high
-};
-
-int operator(char operator){
-   switch (operator)
+// gnu extension 
+int operators(char o){
+   switch (o)
        {
         case '+':
             return add;
@@ -45,7 +33,7 @@ int operator(char operator){
        } 
 }
 int precedence(char c){
-    switch (operator(c))
+    switch (operators(c))
     {
         case add:
         case sub:
@@ -59,13 +47,13 @@ int precedence(char c){
     }
 }
 float calculate(char * rpn,int size){
-    stack_t *num_stack =create_stack(size,"float");
+    stack_t *num_stack =create_stack(size,float_t);
     if(num_stack==NULL){
         return 0.0;
     }
     //creates stack and checks if it was created
     for(int i=0; i<size;i++){
-        if(operator(rpn[i])==not_operator){
+        if(operators(rpn[i])==not_operator){
             float value = (float)(rpn[i]-'0');
             // if current char is a number, converts it to float, pushes it to the stack
             push(num_stack,value);
@@ -75,7 +63,7 @@ float calculate(char * rpn,int size){
         pop(num_stack,&b);
         pop(num_stack,&a);
         //pops two digiets
-        switch (operator(rpn[i]))
+        switch (operators(rpn[i]))
         {
             case add:
                 push(num_stack,(float)(a+b));
@@ -108,24 +96,24 @@ int main(int argc, char **argv){
         scanf("%m[^\n]",&user_input);
         char rpn[strlen(user_input)+1];
         // user input
-        stack_t *char_stack = create_stack(sizeof(char)*strlen(user_input),"char");
+        stack_t *char_stack = create_stack(sizeof(char)*strlen(user_input),char_t);
         // stack creation
         for(int i =0;i<strlen(user_input);i++){
             char cToStr[2];
             cToStr[1] = '\0';
             cToStr[0]=user_input[i];
             //char to sting for strcat
-            if(operator(user_input[i])==not_operator){
+            if(operators(user_input[i])==not_operator){
                 strcat(rpn,cToStr);
                 continue;
                 //if is not operator add to rpn;
             }
-            else if(operator(user_input[i])==left_p){
+            else if(operators(user_input[i])==left_p){
                 push(char_stack,user_input[i]);
                 continue;
                 // if is ( push to stack
             }
-            else if (operator(user_input[i])==right_p){
+            else if (operators(user_input[i])==right_p){
                 char temp;
                 //temp variable reqired to peek
                 while(!is_empty(char_stack)){
@@ -196,7 +184,7 @@ int main(int argc, char **argv){
     else if (argc==2)
     {
         // work in progres 
-        
+
         if(strcmp(argv[1],"-R")==0)
         {
             char *user_input=NULL;
