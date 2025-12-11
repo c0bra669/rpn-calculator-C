@@ -1,15 +1,15 @@
 # rpn-calculator-C  
 hanges input from infix to postfix and caclulates or from postfix to infix
 # Usage
-use with no arguments or -R
+## use with no arguments 
 ```bash
 calculate
 Enter infix expresion:
 <infix>
 ```
-OR 
+## OR -R
 ```bash
-calculate
+calculate -R
 Enter postfix expresion:
 <postfix>
 ```
