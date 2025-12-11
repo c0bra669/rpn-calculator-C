@@ -1,6 +1,7 @@
 # rpn-calculator-C  
 hanges input from infix to postfix and caclulates or from postfix to infix
 # Usage
+**ENTER ONLY INTAGERS WITHOUT SPACES!**
 ## use with no arguments 
 ```bash
 calculate
