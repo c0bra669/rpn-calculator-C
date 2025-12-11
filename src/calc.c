@@ -90,6 +90,64 @@ float calculate(char * rpn,int size){
     destroy_stack(num_stack);
     return result;
 }
+void insert_char(char *str, int pos, char ch)
+{
+    size_t len = strlen(str);
+    memmove(str + pos + 1, str + pos, len - pos + 1);  // shift right
+    str[pos] = ch;
+}
+char *postfix_to_infix(char *rpn, int size) {
+
+    stack_t *stack = create_stack(size, char_t);
+    if (stack == NULL){
+        return NULL;
+    }
+    // allocate memory 
+    char *infix = malloc(size * 4);  
+    if (!infix){
+        return NULL;
+    }
+    infix[0] = '\0'; 
+    for (int i = 0; i < size; i++) {
+        char c = rpn[i];
+        if (operators(c) == not_operator) {
+            // push operand
+            push(stack, c);
+        } else {
+            // pop 2 chars
+            char b, a;
+            int len = strlen(infix);
+            if(pop(stack, &b)){
+                if(pop(stack, &a)){
+                    infix[len]='(';
+                    infix[len+1] = a;
+                    infix[len+2] = c;
+                    infix[len+3] = b;
+                    infix[len+4] = ')';
+                    infix[len+5] = '\0';
+                }
+                else{
+                    infix[len]=c;
+                    infix[len+1]=b;
+                    infix[len+2]='\0';
+                }
+            }
+            else{
+                for(int i=0;i<len;i++){
+                    char a=infix[i];
+                    char b=infix[i+1];
+                    if(a==')'&& b=='('){
+                        insert_char(infix,i+1,c);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    destroy_stack(stack);
+    return infix;
+}
+
 int main(int argc, char **argv){
     if(argc==1){
         char *user_input=NULL;
@@ -189,7 +247,9 @@ int main(int argc, char **argv){
         {
             char *user_input=NULL;
             scanf("%m[^\n]",&user_input);
+            printf("%s\n",postfix_to_infix(user_input,strlen(user_input)));
             printf("%f",calculate(user_input,strlen(user_input)));
+            
             return 0;
         }
         printf("Enter 0 args or -R\n");
