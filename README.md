@@ -13,7 +13,7 @@ calculate
 Enter postfix expresion:
 <postfix>
 ```
-![screenshots/image.png]
+![https://github.com/c0bra669/rpn-calculator-C/blob/main/screenshots/image.png?raw=true](dsadsa)
 # Instalation
 ## Linux only:
 Install libcstack and link it
